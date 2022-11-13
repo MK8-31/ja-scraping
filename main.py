@@ -1,4 +1,3 @@
-import functions_framework
 import requests
 from bs4 import BeautifulSoup
 import os
@@ -6,9 +5,16 @@ import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import re
+from flask import Flask
+from dotenv import load_dotenv
 
-@functions_framework.http
-def ja_scraping(request):
+app = Flask(__name__)
+
+# .envファイルの内容を読み込見込む
+load_dotenv()
+
+@app.route("/")
+def ja_scraping():
     # メールアドレスとパスワードの指定
     USERID = os.environ.get('USERID')
     PASS = os.environ.get('PASS')
@@ -168,7 +174,7 @@ def update_sheet(sheet, data, teika, nebiki, today):
     sheet.update(f"A{next_row}:I{next_row}", [data], value_input_option='USER_ENTERED')
 
 def next_available_row(worksheet):
-    str_list = list(filter(None, worksheet.col_values(1)))
+    str_list = worksheet.col_values(5)
     return len(str_list)+1
 
 # 販売情報を取得した時の日付と曜日と時間帯
