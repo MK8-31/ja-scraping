@@ -174,7 +174,8 @@ def update_sheet(sheet, data, teika, nebiki, today):
     sheet.update(f"A{next_row}:I{next_row}", [data], value_input_option='USER_ENTERED')
 
 def next_available_row(worksheet):
-    str_list = worksheet.col_values(5)
+    # 定価の列で空いている最終行の行数を取得
+    str_list = worksheet.col_values(6)
     return len(str_list)+1
 
 # 販売情報を取得した時の日付と曜日と時間帯
